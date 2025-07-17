@@ -20,7 +20,7 @@ A chatbot powered by FastAPI with smart contextual retrieval using large languag
 #### 1. Clone the repository and create a virtual environment
 
 ```bash
-git clone https://github.com/yourname/chatbot-api.git
+git clone https://github.com/mannghia-jvb/base.git
 cd chatbot-api
 python -m venv venv
 source venv/bin/activate  # or venv\Scripts\activate on Windows
@@ -72,7 +72,7 @@ Visit: [http://localhost:8000](http://localhost:8000)
 
 ---
 
-### 📡 API Endpoint
+### API Endpoint
 
 #### `POST /api/v1/chat`
 
