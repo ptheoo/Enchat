@@ -21,26 +21,16 @@ if USE_GEMINI:
     # Initialize Gemini model instance
     gemini_model = genai.GenerativeModel(GEMINI_MODEL)
 else:
-    import openai
+    from openai import OpenAI
 
-    # Configure OpenAI API
-    openai.api_key = OPENAI_API_KEY
-    openai.api_base = OPENAI_API_BASE
+    # Configure OpenAI client
+    client = OpenAI(api_key=OPENAI_API_KEY, base_url=OPENAI_API_BASE)
+
 
 def get_chat_response(messages: list[dict]) -> str:
     """
     Generate a chat response using either Google Gemini or OpenAI GPT model,
     based on the configuration.
-
-    Args:
-        messages (list[dict]): A list of message dicts with 'role' and 'content',
-                               e.g., [{'role': 'user', 'content': 'Hello!'}]
-
-    Returns:
-        str: The response message content from the AI model.
-
-    Raises:
-        Exception: If the model fails to generate a valid response.
     """
     logger.info("Generating chat response...")
 
@@ -63,8 +53,8 @@ def get_chat_response(messages: list[dict]) -> str:
             raise Exception("Failed to generate response using Gemini API.")
     else:
         try:
-            # Generate response from OpenAI ChatCompletion API
-            response = openai.ChatCompletion.create(
+            # Generate response from OpenAI Chat API (new client)
+            response = client.chat.completions.create(
                 model=MODEL_NAME,
                 messages=messages
             )

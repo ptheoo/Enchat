@@ -7,3 +7,11 @@ google-generativeai
 python-dotenv
 pydantic
 jinja2
+pymongo
+motor
+passlib[bcrypt]
+PyJWT
+python-multipart
+pillow
+pytesseract
+pydantic[email]

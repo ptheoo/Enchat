@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test EnChat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f0f0f0;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .test-button:hover {
+            background: #4f46e5;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .success { background: #d1fae5; color: #065f46; }
+        .error { background: #fee2e2; color: #991b1b; }
+        .info { background: #dbeafe; color: #1e40af; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🧪 Test EnChat Frontend</h1>
+        
+        <div id="status" class="status info">
+            Đang kiểm tra ứng dụng...
+        </div>
+        
+        <div>
+            <button class="test-button" onclick="testBasicFunctionality()">Test Chức Năng Cơ Bản</button>
+            <button class="test-button" onclick="testThemeManager()">Test Theme Manager</button>
+            <button class="test-button" onclick="testSoundManager()">Test Sound Manager</button>
+            <button class="test-button" onclick="testAnimationManager()">Test Animation Manager</button>
+            <button class="test-button" onclick="testToastManager()">Test Toast Manager</button>
+        </div>
+        
+        <div id="results"></div>
+    </div>
+
+    <script type="module">
+        import { ThemeManager } from './src/utils/ThemeManager.js';
+        import { SoundManager } from './src/utils/SoundManager.js';
+        import { AnimationManager } from './src/utils/AnimationManager.js';
+        import { ToastManager } from './src/utils/ToastManager.js';
+
+        // Global test functions
+        window.testBasicFunctionality = function() {
+            const status = document.getElementById('status');
+            const results = document.getElementById('results');
+            
+            try {
+                status.className = 'status info';
+                status.textContent = 'Đang test chức năng cơ bản...';
+                
+                // Test basic DOM
+                const testDiv = document.createElement('div');
+                testDiv.textContent = 'Test DOM';
+                document.body.appendChild(testDiv);
+                document.body.removeChild(testDiv);
+                
+                results.innerHTML = '<div class="status success">✅ Chức năng cơ bản hoạt động tốt!</div>';
+                status.className = 'status success';
+                status.textContent = 'Test thành công!';
+                
+            } catch (error) {
+                results.innerHTML = `<div class="status error">❌ Lỗi: ${error.message}</div>`;
+                status.className = 'status error';
+                status.textContent = 'Test thất bại!';
+            }
+        };
+
+        window.testThemeManager = async function() {
+            const status = document.getElementById('status');
+            const results = document.getElementById('results');
+            
+            try {
+                status.className = 'status info';
+                status.textContent = 'Đang test Theme Manager...';
+                
+                const themeManager = new ThemeManager();
+                await themeManager.init();
+                
+                const currentTheme = themeManager.getCurrentTheme();
+                themeManager.toggle();
+                const newTheme = themeManager.getCurrentTheme();
+                
+                results.innerHTML = `<div class="status success">✅ Theme Manager hoạt động tốt! Theme hiện tại: ${newTheme}</div>`;
+                status.className = 'status success';
+                status.textContent = 'Theme Manager test thành công!';
+                
+            } catch (error) {
+                results.innerHTML = `<div class="status error">❌ Lỗi Theme Manager: ${error.message}</div>`;
+                status.className = 'status error';
+                status.textContent = 'Theme Manager test thất bại!';
+            }
+        };
+
+        window.testSoundManager = async function() {
+            const status = document.getElementById('status');
+            const results = document.getElementById('results');
+            
+            try {
+                status.className = 'status info';
+                status.textContent = 'Đang test Sound Manager...';
+                
+                const soundManager = new SoundManager();
+                await soundManager.init();
+                
+                soundManager.playSound('notification');
+                
+                results.innerHTML = '<div class="status success">✅ Sound Manager hoạt động tốt!</div>';
+                status.className = 'status success';
+                status.textContent = 'Sound Manager test thành công!';
+                
+            } catch (error) {
+                results.innerHTML = `<div class="status error">❌ Lỗi Sound Manager: ${error.message}</div>`;
+                status.className = 'status error';
+                status.textContent = 'Sound Manager test thất bại!';
+            }
+        };
+
+        window.testAnimationManager = function() {
+            const status = document.getElementById('status');
+            const results = document.getElementById('results');
+            
+            try {
+                status.className = 'status info';
+                status.textContent = 'Đang test Animation Manager...';
+                
+                const animationManager = new AnimationManager();
+                animationManager.init();
+                
+                results.innerHTML = '<div class="status success">✅ Animation Manager hoạt động tốt!</div>';
+                status.className = 'status success';
+                status.textContent = 'Animation Manager test thành công!';
+                
+            } catch (error) {
+                results.innerHTML = `<div class="status error">❌ Lỗi Animation Manager: ${error.message}</div>`;
+                status.className = 'status error';
+                status.textContent = 'Animation Manager test thất bại!';
+            }
+        };
+
+        window.testToastManager = function() {
+            const status = document.getElementById('status');
+            const results = document.getElementById('results');
+            
+            try {
+                status.className = 'status info';
+                status.textContent = 'Đang test Toast Manager...';
+                
+                const toastManager = new ToastManager();
+                toastManager.init();
+                
+                toastManager.success('Test toast thành công!');
+                
+                results.innerHTML = '<div class="status success">✅ Toast Manager hoạt động tốt!</div>';
+                status.className = 'status success';
+                status.textContent = 'Toast Manager test thành công!';
+                
+            } catch (error) {
+                results.innerHTML = `<div class="status error">❌ Lỗi Toast Manager: ${error.message}</div>`;
+                status.className = 'status error';
+                status.textContent = 'Toast Manager test thất bại!';
+            }
+        };
+
+        // Auto-test khi trang load
+        window.addEventListener('load', () => {
+            const status = document.getElementById('status');
+            status.className = 'status success';
+            status.textContent = 'Sẵn sàng test! Click các nút bên dưới để kiểm tra từng chức năng.';
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+

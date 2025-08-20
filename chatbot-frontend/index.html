@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EnChat - Chatbot Ngữ Pháp Tiếng Anh</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link rel="apple-touch-icon" href="/static/icon-192.png">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/chat.css">
+    <link rel="stylesheet" href="styles/loading.css">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="EnChat">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h1>EnChat</h1>
+            <p>Đang tải ứng dụng...</p>
+            <div class="loading-spinner"></div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app" class="app-container" style="display: none;">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <button id="sidebar-toggle" class="icon-btn" title="Ẩn/Hiện sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="app-title">
+                    <i class="fas fa-graduation-cap"></i>
+                    EnChat
+                </h1>
+            </div>
+            
+            <div class="header-center">
+                <span class="app-subtitle">Chatbot Ngữ Pháp Tiếng Anh</span>
+            </div>
+            
+            <div class="header-right">
+                <button id="theme-toggle" class="icon-btn" title="Chuyển đổi theme">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button id="settings-btn" class="icon-btn" title="Cài đặt">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <div class="user-menu">
+                    <button id="user-menu-btn" class="user-menu-btn">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="user-name">Khách</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div id="user-dropdown" class="user-dropdown">
+                        <a href="#" id="profile-link">
+                            <i class="fas fa-user"></i>
+                            Hồ sơ
+                        </a>
+                        <a href="#" id="logout-link">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Đăng xuất
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Sidebar -->
+            <aside id="sidebar" class="sidebar">
+                <div class="sidebar-header">
+                    <h3>Chủ đề nhanh</h3>
+                </div>
+                
+                <div class="quick-topics">
+                    <h4>Ngữ pháp cơ bản</h4>
+                    <div class="topic-buttons">
+                        <button class="topic-btn" data-topic="present-simple">
+                            <i class="fas fa-clock"></i>
+                            Thì hiện tại đơn
+                        </button>
+                        <button class="topic-btn" data-topic="present-continuous">
+                            <i class="fas fa-play"></i>
+                            Thì hiện tại tiếp diễn
+                        </button>
+                        <button class="topic-btn" data-topic="past-simple">
+                            <i class="fas fa-history"></i>
+                            Thì quá khứ đơn
+                        </button>
+                        <button class="topic-btn" data-topic="future-simple">
+                            <i class="fas fa-rocket"></i>
+                            Thì tương lai đơn
+                        </button>
+                    </div>
+                    
+                    <h4>Thành phần câu</h4>
+                    <div class="topic-buttons">
+                        <button class="topic-btn" data-topic="nouns">
+                            <i class="fas fa-tag"></i>
+                            Danh từ
+                        </button>
+                        <button class="topic-btn" data-topic="verbs">
+                            <i class="fas fa-running"></i>
+                            Động từ
+                        </button>
+                        <button class="topic-btn" data-topic="adjectives">
+                            <i class="fas fa-star"></i>
+                            Tính từ
+                        </button>
+                        <button class="topic-btn" data-topic="adverbs">
+                            <i class="fas fa-bolt"></i>
+                            Trạng từ
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="sidebar-footer">
+                    <button id="clear-chat-btn" class="btn btn-secondary">
+                        <i class="fas fa-trash"></i>
+                        Xóa chat
+                    </button>
+                    <button id="export-chat-btn" class="btn btn-secondary">
+                        <i class="fas fa-download"></i>
+                        Xuất chat
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Chat Area -->
+            <section class="chat-area">
+                <div id="welcome-message" class="welcome-message">
+                    <div class="welcome-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h2>Chào mừng đến với EnChat!</h2>
+                    <p>Hãy hỏi tôi bất kỳ câu hỏi nào về ngữ pháp tiếng Anh</p>
+                    <div class="welcome-examples">
+                        <p><strong>Ví dụ:</strong></p>
+                        <ul>
+                            <li>"Thì hiện tại đơn dùng khi nào?"</li>
+                            <li>"Cách phân biệt danh từ đếm được và không đếm được?"</li>
+                            <li>"Cấu trúc câu điều kiện loại 1?"</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div id="chat-messages" class="chat-messages"></div>
+                
+                <div id="typing-indicator" class="typing-indicator" style="display: none;">
+                    <div class="typing-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="typing-bubble">
+                        <div class="typing-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Chat Input -->
+        <footer class="chat-input-container">
+            <div class="input-wrapper">
+                <button id="upload-btn" class="icon-btn" title="Tải lên hình ảnh">
+                    <i class="fas fa-image"></i>
+                </button>
+                
+                <div class="input-container">
+                    <textarea 
+                        id="chat-input" 
+                        placeholder="Nhập câu hỏi về ngữ pháp tiếng Anh..."
+                        rows="1"
+                        maxlength="1000"
+                    ></textarea>
+                    <div class="input-actions">
+                        <span id="char-count" class="char-count">0/1000</span>
+                        <button id="send-btn" class="send-btn" disabled>
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Hidden File Input -->
+        <input type="file" id="file-input" accept="image/*" style="display: none;">
+    </div>
+
+    <!-- Modals -->
+    <div id="modal-overlay" class="modal-overlay"></div>
+    
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal">
+        <div class="modal-header">
+            <h3><i class="fas fa-cog"></i> Cài đặt</h3>
+            <button class="modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="settings-form">
+                <div class="setting-group">
+                    <label class="setting-label">
+                        <input type="checkbox" id="dark-mode-toggle">
+                        <span class="setting-text">Chế độ tối</span>
+                    </label>
+                </div>
+                
+                <div class="setting-group">
+                    <label class="setting-label">
+                        <input type="checkbox" id="sound-toggle" checked>
+                        <span class="setting-text">Âm thanh</span>
+                    </label>
+                </div>
+                
+                <div class="setting-group">
+                    <label class="setting-label">
+                        <input type="checkbox" id="animation-toggle" checked>
+                        <span class="setting-text">Hiệu ứng chuyển động</span>
+                    </label>
+                </div>
+                
+                <div class="setting-group">
+                    <label class="setting-label">
+                        <input type="checkbox" id="history-toggle" checked>
+                        <span class="setting-text">Lưu lịch sử chat</span>
+                    </label>
+                </div>
+                
+                <div class="setting-group">
+                    <label class="setting-label">
+                        <input type="checkbox" id="time-toggle" checked>
+                        <span class="setting-text">Hiển thị thời gian</span>
+                    </label>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="settings-cancel">Hủy</button>
+            <button type="button" class="btn btn-primary" id="settings-save">Lưu</button>
+        </div>
+    </div>
+
+    <!-- Upload Modal -->
+    <div id="upload-modal" class="modal">
+        <div class="modal-header">
+            <h3><i class="fas fa-image"></i> Tải lên hình ảnh</h3>
+            <button class="modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="upload-area" id="upload-area">
+                <div class="upload-content">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Kéo thả hình ảnh vào đây hoặc click để chọn</p>
+                    <p class="upload-hint">Hỗ trợ: PNG, JPG, JPEG, GIF, WEBP</p>
+                </div>
+            </div>
+            
+            <div id="image-preview" class="image-preview" style="display: none;">
+                <img id="preview-img" src="" alt="Preview">
+                <div class="preview-info">
+                    <p><strong>Tên file:</strong> <span id="preview-name"></span></p>
+                    <p><strong>Kích thước:</strong> <span id="preview-size"></span></p>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="upload-cancel">Hủy</button>
+            <button type="button" class="btn btn-primary" id="upload-confirm" disabled>Xác nhận</button>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script type="module" src="src/app.js"></script>
+</body>
+</html>
+
+
+
+
+

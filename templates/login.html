@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng nhập - EnChat</title>
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#3b82f6,#1e3a8a);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    .card{width:100%;max-width:420px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.25);padding:28px}
+    .title{margin:0 0 8px;font-size:24px;font-weight:800;color:#111827}
+    .subtitle{margin:0 0 20px;color:#6b7280}
+    .field{display:flex;flex-direction:column;margin:10px 0}
+    .label{font-size:13px;color:#374151;margin-bottom:6px}
+    .input{padding:12px 14px;border:1px solid #e5e7eb;border-radius:10px;font-size:14px;outline:none}
+    .input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.2)}
+    .btn{width:100%;padding:12px 14px;border:none;border-radius:10px;background:#6366f1;color:#fff;font-weight:700;cursor:pointer}
+    .btn:hover{background:#4f46e5}
+    .links{display:flex;justify-content:space-between;margin-top:12px;font-size:14px}
+    .links a{color:#4f46e5;text-decoration:none}
+    .error{display:none;margin-top:10px;color:#b91c1c;font-size:14px}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1 class="title">Welcome back to EnChat!</h1>
+    <p class="subtitle">Sử dụng tài khoản để tiếp tục</p>
+    <div id="error" class="error"></div>
+    <div class="field">
+      <label class="label" for="email">Email</label>
+      <input class="input" id="email" type="email" placeholder="you@example.com" autocomplete="email">
+    </div>
+    <div class="field">
+      <label class="label" for="password">Mật khẩu</label>
+      <input class="input" id="password" type="password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <button class="btn" id="loginBtn">Đăng nhập</button>
+    <div class="links">
+      <a href="/register">Tạo tài khoản</a>
+      <a href="/forgot">Quên mật khẩu?</a>
+    </div>
+  </div>
+
+  <script>
+    const emailEl = document.getElementById('email');
+    const passEl = document.getElementById('password');
+    const errEl = document.getElementById('error');
+    document.getElementById('loginBtn').addEventListener('click', login);
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Enter') login(); });
+
+    async function login(){
+      const email = emailEl.value.trim();
+      const password = passEl.value.trim();
+      if(!email || !password){ return showError('Vui lòng nhập đầy đủ email và mật khẩu'); }
+      try{
+        const res = await fetch('/api/v1/auth/login',{
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({email,password})
+        });
+        const data = await res.json().catch(()=>({}));
+        if(!res.ok){ return showError(data.detail || 'Đăng nhập thất bại'); }
+        localStorage.setItem('enchat-token', data.access_token);
+        // Tương thích giao diện cũ
+        localStorage.setItem('token', data.access_token);
+        localStorage.setItem('enchat-user', JSON.stringify({ email, name: data.name || email }));
+        if(data.require_change){
+          location.href = '/reset';
+        }else{
+          location.href = '/';
+        }
+      }catch(err){ showError('Lỗi kết nối: '+ err.message); }
+    }
+    function showError(msg){ errEl.textContent = msg; errEl.style.display='block'; }
+  </script>
+</body>
+</html>

@@ -1,47 +1,22 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel
 from app.services.chat_service import process_user_message
+from app.utils.auth import get_current_user
+from app.core.db import get_db
 
 router = APIRouter()
 
 class ChatRequest(BaseModel):
-    """
-    Request schema for chat endpoint.
-
-    Attributes:
-        message (str): The input message from the user.
-    """
     message: str
 
 class ChatResponse(BaseModel):
-    """
-    Response schema for chat endpoint.
-
-    Attributes:
-        reply (str): The AI-generated reply message.
-        conversation (list[dict]): Full conversation history with roles and contents.
-    """
     reply: str
     conversation: list[dict]
 
 @router.post("/chat", response_model=ChatResponse)
-def chat(req: ChatRequest):
-    """
-    Handle user message and return AI-generated reply.
-
-    Args:
-        req (ChatRequest): The request body containing the user message.
-
-    Returns:
-        ChatResponse: Contains the reply from AI and the updated conversation.
-
-    Raises:
-        HTTPException: If any error occurs during processing.
-    """
+async def chat(req: ChatRequest, user = Depends(get_current_user), db = Depends(get_db)):
     try:
-        # Process the user's message and get reply and conversation history
-        reply, conversation = process_user_message(req.message)
-
+        reply, conversation = await process_user_message(user["_id"], req.message, db)
         return {"reply": reply, "conversation": conversation}
     except Exception as e:
         print("Error in /chat:", str(e))

@@ -1,0 +1,148 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #3b82f6, #1e3a8a);
+}
+
+.container {
+  width: 900px;
+  height: 500px;
+  display: flex;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  animation: fadeInUp 0.8s ease-out;
+}
+
+/* Left Side */
+.welcome-section {
+  flex: 1;
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  color: white;
+  padding: 60px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.welcome-section h1 {
+  font-size: 36px;
+  margin-bottom: 15px;
+}
+
+.welcome-section p {
+  font-size: 14px;
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+/* Right Side */
+.form-section {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form label {
+  font-size: 14px;
+  margin: 10px 0 5px;
+  font-weight: 600;
+}
+
+.login-form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  transition: border 0.3s;
+}
+
+.login-form input:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin: 10px 0;
+}
+
+.options a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btn {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.btn.login {
+  background: #2563eb;
+  color: white;
+  border: none;
+}
+
+.btn.signup {
+  border: 2px solid #2563eb;
+  background: white;
+  color: #2563eb;
+}
+
+.btn.login:hover {
+  background: #1e40af;
+}
+
+.btn.signup:hover {
+  background: #2563eb;
+  color: white;
+}
+
+.socials {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.socials a {
+  margin: 0 5px;
+  color: #2563eb;
+  font-size: 18px;
+}
+
+/* Animation */
+@keyframes fadeInUp {
+  from { transform: translateY(30px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

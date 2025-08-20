@@ -1,57 +1,148 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Chatbot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EnChat</title>
+  <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
   <style>
-    body { font-family: Arial, sans-serif; max-width: 700px; margin: auto; padding: 2rem; }
-    #chat-box { border: 1px solid #ccc; padding: 1rem; height: 400px; overflow-y: auto; background: #f9f9f9; }
-    .user { color: blue; margin: 0.5rem 0; }
-    .bot { color: green; margin: 0.5rem 0; }
-    input[type=text] { width: 80%; padding: 0.5rem; }
-    button { padding: 0.5rem 1rem; }
+    :root { --bg:#0f172a; --panel:#0b1220; --muted:#64748b; --primary:#6366f1; --bubble:#1f2937; --user:#2563eb; }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body { margin: 0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; background: linear-gradient(180deg,#0b1020,#0f172a); color: #e5e7eb; }
+    .app { height: 100%; display: grid; grid-template-rows: auto 1fr auto; }
+    header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid rgba(148,163,184,.15); background: rgba(11,18,32,.7); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 10; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; }
+    .brand .dot { width: 10px; height: 10px; border-radius: 999px; background: var(--primary); box-shadow: 0 0 16px var(--primary); }
+    .actions { display: flex; gap: 8px; }
+    .btn { border: 1px solid rgba(148,163,184,.25); background: transparent; color:#e5e7eb; padding: 8px 12px; border-radius: 10px; cursor: pointer; }
+    .btn.primary { background: var(--primary); border-color: var(--primary); color:#fff; }
+    main { display: grid; grid-template-columns: 1fr; }
+    .chat { max-width: 980px; margin: 0 auto; width: 100%; padding: 18px; }
+    #messages { height: calc(100vh - 210px); overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 6px; }
+    .message { display: flex; gap: 10px; align-items: flex-end; }
+    .bubble { max-width: 75%; padding: 10px 12px; border-radius: 14px; line-height: 1.45; font-size: 15px; white-space: pre-wrap; word-break: break-word; }
+    .assistant .bubble { background: var(--bubble); border: 1px solid rgba(148,163,184,.15); }
+    .user .bubble { background: var(--user); color: #fff; }
+    .assistant { justify-content: flex-start; }
+    .user { justify-content: flex-end; }
+    footer { position: sticky; bottom: 0; background: linear-gradient(180deg,rgba(11,18,32,.6),rgba(11,18,32,.9)); border-top: 1px solid rgba(148,163,184,.15); }
+    .composer { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: auto 1fr auto; gap: 10px; padding: 14px 18px; align-items: center; }
+    .input { background: #0b1220; border: 1px solid rgba(148,163,184,.25); border-radius: 12px; padding: 12px 14px; color: #e5e7eb; outline: none; width: 100%; }
+    .input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,.2); }
+    .icon-btn { width: 40px; height: 40px; border-radius: 10px; display: inline-grid; place-items: center; border: 1px solid rgba(148,163,184,.25); background: #0b1220; color:#cbd5e1; cursor: pointer; }
   </style>
 </head>
 <body>
-  <h1>Chatbot</h1>
-  <div id="chat-box"></div>
-
-  <div style="margin-top: 1rem;">
-    <input type="text" id="user-input" placeholder="Type your message..." />
-    <button onclick="sendMessage()">Send</button>
+  <div class="app">
+    <header>
+      <div class="brand"><div class="dot"></div> EnChat</div>
+      <div class="actions">
+        <button class="btn" id="historyBtn">Lịch sử</button>
+        <button class="btn" id="logoutBtn">Đăng xuất</button>
+      </div>
+    </header>
+    <main>
+      <div class="chat">
+        <div id="messages"></div>
+      </div>
+    </main>
+    <footer>
+      <div class="composer">
+        <label class="icon-btn" title="Gửi ảnh" for="image-input">📎</label>
+        <input id="message-input" class="input" type="text" placeholder="Nhập tin nhắn và nhấn Enter để gửi..." autocomplete="off">
+        <button class="btn primary" id="sendBtn">Gửi</button>
+        <input id="image-input" type="file" accept="image/*" style="display:none">
+      </div>
+    </footer>
   </div>
 
   <script>
-    const chatBox = document.getElementById('chat-box');
+    const messagesEl = document.getElementById('messages');
+    const inputEl = document.getElementById('message-input');
+    const imageEl = document.getElementById('image-input');
+    const sendBtn = document.getElementById('sendBtn');
+    const token = localStorage.getItem('enchat-token');
+    if (!token) { window.location.href = '/login'; }
 
-    function appendMessage(role, text) {
-      const msg = document.createElement('div');
-      msg.className = role;
-      msg.innerText = `${role === 'user' ? 'You' : 'Bot'}: ${text}`;
-      chatBox.appendChild(msg);
-      chatBox.scrollTop = chatBox.scrollHeight;
+    function appendMessage(role, content) {
+      const row = document.createElement('div');
+      row.className = 'message ' + (role === 'user' ? 'user' : 'assistant');
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.textContent = content;
+      row.appendChild(bubble);
+      messagesEl.appendChild(row);
+      messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
-    async function sendMessage() {
-      const input = document.getElementById('user-input');
-      const message = input.value.trim();
-      if (!message) return;
+    function setSending(isSending){
+      inputEl.disabled = isSending; sendBtn.disabled = isSending;
+      sendBtn.textContent = isSending ? 'Đang gửi...' : 'Gửi';
+    }
 
+    async function sendMessage(){
+      const message = (inputEl.value || '').trim();
+      if(!message) return;
       appendMessage('user', message);
-      input.value = "";
-
-      try {
-        const res = await fetch('/api/v1/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+      inputEl.value = '';
+      setSending(true);
+      try{
+        const res = await fetch('/api/v1/chat',{
+          method:'POST',
+          headers:{'Content-Type':'application/json','Authorization':'Bearer ' + token},
           body: JSON.stringify({ message })
         });
-        const data = await res.json();
-        appendMessage('bot', data.reply);
-      } catch (err) {
-        appendMessage('bot', 'Error: ' + err.message);
+        if(!res.ok){
+          const err = await res.json().catch(()=>({}));
+          appendMessage('assistant', 'Lỗi: ' + (err.detail || res.statusText));
+        } else {
+          const data = await res.json();
+          appendMessage('assistant', data.reply);
+        }
+      }catch(err){
+        appendMessage('assistant','Lỗi: ' + err.message);
+      }finally{
+        setSending(false);
       }
     }
+
+    async function sendImage(file){
+      if(!file) return;
+      appendMessage('user','[📷 Đã gửi một ảnh]');
+      const formData = new FormData();
+      formData.append('file', file);
+      try{
+        const res = await fetch('/api/v1/upload',{ method:'POST', headers:{'Authorization':'Bearer ' + token}, body: formData });
+        if(!res.ok){
+          const err = await res.json().catch(()=>({}));
+          appendMessage('assistant','Lỗi: ' + (err.detail || res.statusText));
+        }else{
+          const data = await res.json();
+          appendMessage('assistant', data.reply);
+        }
+      }catch(err){
+        appendMessage('assistant','Lỗi: ' + err.message);
+      }
+    }
+
+    async function loadHistory(){
+      try{
+        const res = await fetch('/api/v1/history',{ headers:{'Authorization':'Bearer ' + token}});
+        const data = await res.json().catch(()=>({items:[]}));
+        (data.items || []).forEach(m => appendMessage(m.role === 'assistant' ? 'assistant' : 'user', m.content));
+      }catch(err){
+        console.warn('Load history error', err);
+      }
+    }
+
+    document.getElementById('historyBtn').addEventListener('click', loadHistory);
+    document.getElementById('logoutBtn').addEventListener('click', ()=>{ localStorage.removeItem('enchat-token'); localStorage.removeItem('enchat-user'); location.href='/login'; });
+    sendBtn.addEventListener('click', sendMessage);
+    inputEl.addEventListener('keydown', (e)=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(); } });
+    imageEl.addEventListener('change', (e)=>{ if(e.target.files && e.target.files[0]) sendImage(e.target.files[0]); e.target.value=''; });
+
+    loadHistory();
   </script>
 </body>
 </html>
