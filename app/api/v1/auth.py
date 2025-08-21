@@ -87,6 +87,39 @@ class ResetReq(BaseModel):
     new_password: str
 
 
+class ResetPasswordReq(BaseModel):
+    email: EmailStr
+    temp_password: str
+    new_password: str
+    confirm_password: str
+
+
+@router.post("/auth/reset-password")
+async def reset_password(req: ResetPasswordReq, db = Depends(get_db)):
+    """Reset password với mật khẩu tạm thời và mật khẩu mới"""
+    if req.new_password != req.confirm_password:
+        raise HTTPException(status_code=400, detail="Mật khẩu xác nhận không khớp")
+    
+    if len(req.new_password) < 6:
+        raise HTTPException(status_code=400, detail="Mật khẩu phải có ít nhất 6 ký tự")
+    
+    user = await db.users.find_one({"email": req.email})
+    if not user:
+        raise HTTPException(status_code=404, detail="Email không tồn tại")
+    
+    # Xác thực mật khẩu tạm thời
+    if not verify_password(req.temp_password, user["password_hash"]):
+        raise HTTPException(status_code=401, detail="Mật khẩu tạm thời không đúng")
+    
+    # Cập nhật mật khẩu mới
+    new_password_hash = hash_password(req.new_password)
+    await db.users.update_one(
+        {"_id": user["_id"]},
+        {"$set": {"password_hash": new_password_hash}},
+    )
+    return {"ok": True, "msg": "Mật khẩu đã được đặt lại thành công"}
+
+
 @router.post("/auth/dev-reset")
 async def dev_reset(req: ResetReq, db = Depends(get_db)):
     if not DEV_ALLOW_INSECURE_RESET:

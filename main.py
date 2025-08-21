@@ -2,15 +2,12 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app.api.v1.chat import router as chat_router
 from app.api.v1.auth import router as auth_router
 from app.api.v1.history import router as history_router
 from app.api.v1.upload import router as upload_router
-from app.api.v1.chat import router as chat_router
 
 # Initialize FastAPI app with title and version
 app = FastAPI(title="Chatbot API", version="1.0")
@@ -60,6 +57,13 @@ def register(request: Request):
 @app.get("/forgot", response_class=HTMLResponse)
 def forgot(request: Request):
     return templates.TemplateResponse("forgot.html", {"request": request})
+
+@app.get("/reset", response_class=HTMLResponse)
+def reset(request: Request):
+    """
+    Serves the reset password page.
+    """
+    return templates.TemplateResponse("reset.html", {"request": request})
 
 @app.get("/demo", response_class=HTMLResponse)
 def demo(request: Request):
