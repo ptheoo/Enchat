@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo - Enchat</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --success-color: #48bb78;
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f7fafc;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 40px 0;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 20px;
+            margin-bottom: 40px;
+        }
+
+        .demo-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .demo-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .demo-card {
+            background: var(--bg-primary);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .demo-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .demo-card i {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .demo-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        .demo-card p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .demo-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .demo-btn.accent {
+            background: var(--gradient-accent);
+        }
+
+        .demo-btn.success {
+            background: var(--gradient-success);
+        }
+
+        .demo-footer {
+            text-align: center;
+            padding: 40px 0;
+            background: var(--bg-primary);
+            border-radius: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .demo-footer h2 {
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .demo-footer p {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        .demo-links {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .demo-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .demo-links a:hover {
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .demo-links {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="demo-header">
+            <h1><i class="fas fa-robot"></i> Enchat Demo</h1>
+            <p>Giao diện mới đẹp mắt và hiện đại</p>
+        </div>
+
+        <div class="demo-grid">
+            <div class="demo-card">
+                <i class="fas fa-home"></i>
+                <h3>Trang chủ</h3>
+                <p>Trang chủ với thiết kế hiện đại, giới thiệu tính năng và câu nói tiếng Anh truyền cảm hứng</p>
+                <a href="/" class="demo-btn">Xem trang chủ</a>
+            </div>
+
+            <div class="demo-card">
+                <i class="fas fa-comments"></i>
+                <h3>Trang chat</h3>
+                <p>Giao diện chat đẹp mắt với AI, hỗ trợ gửi ảnh và xem lịch sử chat</p>
+                <a href="/chat" class="demo-btn accent">Vào chat</a>
+            </div>
+
+            <div class="demo-card">
+                <i class="fas fa-sign-in-alt"></i>
+                <h3>Đăng nhập</h3>
+                <p>Form đăng nhập với thiết kế gradient đẹp mắt và validation thông minh</p>
+                <a href="/login" class="demo-btn success">Đăng nhập</a>
+            </div>
+
+            <div class="demo-card">
+                <i class="fas fa-user-plus"></i>
+                <h3>Đăng ký</h3>
+                <p>Form đăng ký với validation mật khẩu và tự động đăng nhập sau khi đăng ký</p>
+                <a href="/register" class="demo-btn">Đăng ký</a>
+            </div>
+
+            <div class="demo-card">
+                <i class="fas fa-key"></i>
+                <h3>Quên mật khẩu</h3>
+                <p>Trang quên mật khẩu với thiết kế warning gradient và hướng dẫn rõ ràng</p>
+                <a href="/forgot" class="demo-btn accent">Quên mật khẩu</a>
+            </div>
+
+            <div class="demo-card">
+                <i class="fas fa-code"></i>
+                <h3>Mã nguồn</h3>
+                <p>Xem mã nguồn và tài liệu hướng dẫn để hiểu rõ hơn về dự án</p>
+                <a href="https://github.com" class="demo-btn success">Xem mã nguồn</a>
+            </div>
+        </div>
+
+        <div class="demo-footer">
+            <h2>🚀 Sẵn sàng trải nghiệm?</h2>
+            <p>Enchat mang đến giao diện chatbot đẹp mắt nhất với các tính năng hiện đại</p>
+            <div class="demo-links">
+                <a href="/"><i class="fas fa-home"></i> Trang chủ</a>
+                <a href="/chat"><i class="fas fa-comments"></i> Chat</a>
+                <a href="/login"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a>
+                <a href="/register"><i class="fas fa-user-plus"></i> Đăng ký</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add some interactive effects
+        document.querySelectorAll('.demo-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Add click effects to buttons
+        document.querySelectorAll('.demo-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html>
+

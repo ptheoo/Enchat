@@ -1,64 +1,553 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quên mật khẩu - EnChat</title>
-  <link rel="stylesheet" href="/static/style.css">
-  <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
-  <style>
-    body{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#3b82f6,#1e3a8a);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
-    .card{width:100%;max-width:460px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.25);padding:28px}
-    .title{margin:0 0 8px;font-size:24px;font-weight:800;color:#111827}
-    .subtitle{margin:0 0 20px;color:#6b7280}
-    .field{display:flex;flex-direction:column;margin:10px 0}
-    .label{font-size:13px;color:#374151;margin-bottom:6px}
-    .input{padding:12px 14px;border:1px solid #e5e7eb;border-radius:10px;font-size:14px;outline:none}
-    .input:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.2)}
-    .btn{width:100%;padding:12px 14px;border:none;border-radius:10px;background:#f59e0b;color:#fff;font-weight:700;cursor:pointer}
-    .btn:hover{background:#d97706}
-    .links{display:flex;justify-content:flex-end;margin-top:12px;font-size:14px}
-    .links a{color:#4f46e5;text-decoration:none}
-    .error{display:none;margin-top:10px;color:#b91c1c;font-size:14px}
-    .success{display:none;margin-top:10px;color:#065f46;font-size:14px}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quên mật khẩu - Enchat</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --success-color: #48bb78;
+            --warning-color: #ed8936;
+            --error-color: #f56565;
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f7fafc;
+            --bg-tertiary: #edf2f7;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-warning: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--gradient-warning);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: float 20s infinite linear;
+            z-index: 0;
+        }
+
+        @keyframes float {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .forgot-container {
+            background: var(--bg-primary);
+            border-radius: 25px;
+            box-shadow: var(--shadow-lg);
+            padding: 50px;
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .forgot-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .logo i {
+            font-size: 3rem;
+            color: var(--warning-color);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .logo span {
+            font-size: 2rem;
+            font-weight: bold;
+            background: var(--gradient-warning);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .forgot-header h1 {
+            color: var(--text-primary);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .forgot-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 15px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--warning-color);
+            background: var(--bg-primary);
+            box-shadow: 0 0 0 3px rgba(237, 137, 54, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .form-group input:focus + .input-icon {
+            color: var(--warning-color);
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        .reset-btn {
+            width: 100%;
+            background: var(--gradient-warning);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reset-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-accent);
+            transition: left 0.5s ease;
+            z-index: 0;
+        }
+
+        .reset-btn:hover::before {
+            left: 0;
+        }
+
+        .reset-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .reset-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .reset-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .divider span {
+            background: var(--bg-primary);
+            padding: 0 20px;
+        }
+
+        .action-links {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .action-links a {
+            color: var(--warning-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-links a:hover {
+            color: var(--secondary-color);
+        }
+
+        .back-home {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-home a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-home a:hover {
+            color: var(--warning-color);
+        }
+
+        .error-message {
+            background: var(--error-color);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .success-message {
+            background: var(--success-color);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .info-message {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            border-left: 4px solid var(--warning-color);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Floating elements */
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: floating 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 90px;
+            height: 90px;
+            top: 12%;
+            left: 12%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 70px;
+            height: 70px;
+            top: 22%;
+            right: 18%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 110px;
+            height: 110px;
+            bottom: 18%;
+            left: 18%;
+            animation-delay: 4s;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .forgot-container {
+                padding: 30px 25px;
+                margin: 20px;
+            }
+            
+            .logo span {
+                font-size: 1.5rem;
+            }
+            
+            .forgot-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .action-links {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="card">
-    <h1 class="title">Quên mật khẩu</h1>
-    <p class="subtitle">Nhập email để nhận hướng dẫn đặt lại mật khẩu</p>
-    <div id="error" class="error"></div>
-    <div id="success" class="success"></div>
-    <div class="field">
-      <label class="label" for="email">Email</label>
-      <input class="input" type="email" id="email" placeholder="you@example.com" autocomplete="email" />
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
     </div>
-    <button class="btn" id="resetBtn">Gửi hướng dẫn</button>
-    <div class="links"><a href="/login">Quay lại đăng nhập</a></div>
-  </div>
 
-  <script>
-    const emailEl = document.getElementById('email');
-    const errEl = document.getElementById('error');
-    const okEl = document.getElementById('success');
-    document.getElementById('resetBtn').addEventListener('click', resetPassword);
-    document.addEventListener('keydown', (e)=>{ if(e.key==='Enter') resetPassword(); });
+    <div class="forgot-container">
+        <div class="forgot-header">
+            <div class="logo">
+                <i class="fas fa-key"></i>
+                <span>Enchat</span>
+            </div>
+            <h1>Quên mật khẩu?</h1>
+            <p>Đừng lo lắng! Chúng tôi sẽ gửi hướng dẫn đặt lại mật khẩu vào email của bạn.</p>
+        </div>
 
-    async function resetPassword(){
-      const email = emailEl.value.trim();
-      if(!email){ return showError('Vui lòng nhập email'); }
-      try{
-        const res = await fetch('/api/v1/auth/forgot',{
-          method:'POST', headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({email})
+        <div class="info-message">
+            <i class="fas fa-info-circle"></i>
+            Nhập địa chỉ email bạn đã đăng ký với Enchat, chúng tôi sẽ gửi link đặt lại mật khẩu.
+        </div>
+
+        <div class="error-message" id="error-message"></div>
+        <div class="success-message" id="success-message"></div>
+
+        <form id="forgot-form">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <div class="input-wrapper">
+                    <input type="email" id="email" name="email" placeholder="Nhập email của bạn" required>
+                    <i class="fas fa-envelope input-icon"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="reset-btn" id="reset-btn">
+                <span>Gửi link đặt lại mật khẩu</span>
+            </button>
+        </form>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Đang gửi email...</p>
+        </div>
+
+        <div class="divider">
+            <span>hoặc</span>
+        </div>
+
+        <div class="action-links">
+            <a href="/login">
+                <i class="fas fa-sign-in-alt"></i>
+                Đăng nhập
+            </a>
+            <a href="/register">
+                <i class="fas fa-user-plus"></i>
+                Tạo tài khoản mới
+            </a>
+        </div>
+
+        <div class="back-home">
+            <a href="/">
+                <i class="fas fa-arrow-left"></i>
+                Về trang chủ
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const forgotForm = document.getElementById('forgot-form');
+        const resetBtn = document.getElementById('reset-btn');
+        const loading = document.getElementById('loading');
+        const errorMessage = document.getElementById('error-message');
+        const successMessage = document.getElementById('success-message');
+
+        forgotForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+
+            // Reset messages
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
+
+            if (!email) {
+                showError('Vui lòng nhập email của bạn');
+                return;
+            }
+
+            // Show loading
+            resetBtn.disabled = true;
+            loading.style.display = 'block';
+
+            try {
+                const response = await fetch('/api/v1/auth/forgot', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Show success message
+                    successMessage.innerHTML = `
+                        <i class="fas fa-check-circle"></i>
+                        <strong>Email đã được gửi!</strong><br>
+                        Vui lòng kiểm tra hộp thư của bạn và làm theo hướng dẫn để đặt lại mật khẩu.
+                    `;
+                    successMessage.style.display = 'block';
+                    
+                    // Disable form after successful submission
+                    forgotForm.style.display = 'none';
+                    loading.style.display = 'none';
+                } else {
+                    throw new Error(data.detail || 'Không thể gửi email đặt lại mật khẩu');
+                }
+            } catch (error) {
+                showError(error.message || 'Có lỗi xảy ra, vui lòng thử lại');
+            } finally {
+                resetBtn.disabled = false;
+                loading.style.display = 'none';
+            }
         });
-        const data = await res.json().catch(()=>({}));
-        if(!res.ok){ return showError(data.detail || 'Không thể gửi email'); }
-        showSuccess(data.msg || 'Nếu email hợp lệ, hướng dẫn đặt lại mật khẩu đã được gửi.');
-      }catch(err){ showError('Lỗi kết nối: '+err.message); }
-    }
-    function showError(msg){ okEl.style.display='none'; errEl.textContent = msg; errEl.style.display='block'; }
-    function showSuccess(msg){ errEl.style.display='none'; okEl.textContent = msg; okEl.style.display='block'; }
-  </script>
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+        }
+
+        // Add some interactive effects
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'scale(1.02)';
+            });
+
+            input.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'scale(1)';
+            });
+        });
+    </script>
 </body>
 </html>

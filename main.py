@@ -38,7 +38,14 @@ templates = Jinja2Templates(directory="templates")
 @app.get("/", response_class=HTMLResponse)
 def root(request: Request):
     """
-    Serves the homepage with a basic chatbot interface (index.html).
+    Serves the new beautiful homepage (home.html).
+    """
+    return templates.TemplateResponse("home.html", {"request": request})
+
+@app.get("/chat", response_class=HTMLResponse)
+def chat(request: Request):
+    """
+    Serves the chat interface (index.html).
     """
     return templates.TemplateResponse("index.html", {"request": request})
 
@@ -53,3 +60,17 @@ def register(request: Request):
 @app.get("/forgot", response_class=HTMLResponse)
 def forgot(request: Request):
     return templates.TemplateResponse("forgot.html", {"request": request})
+
+@app.get("/demo", response_class=HTMLResponse)
+def demo(request: Request):
+    """
+    Serves the demo page for testing the new interface.
+    """
+    return templates.TemplateResponse("demo.html", {"request": request})
+
+@app.get("/test", response_class=HTMLResponse)
+def test(request: Request):
+    """
+    Serves the test page for quick navigation.
+    """
+    return templates.TemplateResponse("test.html", {"request": request})

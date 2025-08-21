@@ -1,148 +1,850 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EnChat</title>
-  <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
-  <style>
-    :root { --bg:#0f172a; --panel:#0b1220; --muted:#64748b; --primary:#6366f1; --bubble:#1f2937; --user:#2563eb; }
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body { margin: 0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; background: linear-gradient(180deg,#0b1020,#0f172a); color: #e5e7eb; }
-    .app { height: 100%; display: grid; grid-template-rows: auto 1fr auto; }
-    header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid rgba(148,163,184,.15); background: rgba(11,18,32,.7); backdrop-filter: blur(8px); position: sticky; top: 0; z-index: 10; }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; }
-    .brand .dot { width: 10px; height: 10px; border-radius: 999px; background: var(--primary); box-shadow: 0 0 16px var(--primary); }
-    .actions { display: flex; gap: 8px; }
-    .btn { border: 1px solid rgba(148,163,184,.25); background: transparent; color:#e5e7eb; padding: 8px 12px; border-radius: 10px; cursor: pointer; }
-    .btn.primary { background: var(--primary); border-color: var(--primary); color:#fff; }
-    main { display: grid; grid-template-columns: 1fr; }
-    .chat { max-width: 980px; margin: 0 auto; width: 100%; padding: 18px; }
-    #messages { height: calc(100vh - 210px); overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 6px; }
-    .message { display: flex; gap: 10px; align-items: flex-end; }
-    .bubble { max-width: 75%; padding: 10px 12px; border-radius: 14px; line-height: 1.45; font-size: 15px; white-space: pre-wrap; word-break: break-word; }
-    .assistant .bubble { background: var(--bubble); border: 1px solid rgba(148,163,184,.15); }
-    .user .bubble { background: var(--user); color: #fff; }
-    .assistant { justify-content: flex-start; }
-    .user { justify-content: flex-end; }
-    footer { position: sticky; bottom: 0; background: linear-gradient(180deg,rgba(11,18,32,.6),rgba(11,18,32,.9)); border-top: 1px solid rgba(148,163,184,.15); }
-    .composer { max-width: 980px; margin: 0 auto; display: grid; grid-template-columns: auto 1fr auto; gap: 10px; padding: 14px 18px; align-items: center; }
-    .input { background: #0b1220; border: 1px solid rgba(148,163,184,.25); border-radius: 12px; padding: 12px 14px; color: #e5e7eb; outline: none; width: 100%; }
-    .input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99,102,241,.2); }
-    .icon-btn { width: 40px; height: 40px; border-radius: 10px; display: inline-grid; place-items: center; border: 1px solid rgba(148,163,184,.25); background: #0b1220; color:#cbd5e1; cursor: pointer; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enchat - AI Grammar Assistant</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --accent-color: #f093fb;
+            --text-primary: #2d3748;
+            --text-secondary: #718096;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f7fafc;
+            --bg-tertiary: #edf2f7;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-accent: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logo i {
+            font-size: 2rem;
+            color: var(--accent-color);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Main Chat Area */
+        .chat-container {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+            margin: 20px 0;
+            height: calc(100vh - 140px);
+        }
+
+        .chat-main {
+            background: var(--bg-primary);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: var(--gradient-accent);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .chat-header h2 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .chat-header p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: var(--bg-secondary);
+        }
+
+        .message {
+            margin-bottom: 20px;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .message.user {
+            text-align: right;
+        }
+
+        .message.bot {
+            text-align: left;
+        }
+
+        .message-content {
+            display: inline-block;
+            max-width: 70%;
+            padding: 15px 20px;
+            border-radius: 20px;
+            position: relative;
+            word-wrap: break-word;
+        }
+
+        .message.user .message-content {
+            background: var(--gradient-primary);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message.bot .message-content {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            border-bottom-left-radius: 5px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 5px;
+            display: block;
+        }
+
+        .message.user .message-time {
+            text-align: right;
+        }
+
+        .chat-input-area {
+            padding: 20px;
+            background: var(--bg-primary);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .input-container {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            resize: none;
+            min-height: 50px;
+            max-height: 120px;
+        }
+
+        .message-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .send-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .upload-btn {
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* Sidebar */
+        .chat-sidebar {
+            background: var(--bg-primary);
+            border-radius: 20px;
+            box-shadow: var(--shadow-lg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .sidebar-section {
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .sidebar-section h3 {
+            color: var(--text-primary);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-section h3 i {
+            color: var(--primary-color);
+        }
+
+        .history-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .history-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .clear-btn {
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .clear-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .chat-history {
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .chat-history.show {
+            display: block;
+        }
+
+        .history-item {
+            padding: 10px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            margin-bottom: 5px;
+        }
+
+        .history-item:hover {
+            background: var(--bg-tertiary);
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-preview {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Welcome Message */
+        .welcome-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+        }
+
+        .welcome-message i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .welcome-message h3 {
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .welcome-message p {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* Loading Animation */
+        .typing-indicator {
+            display: none;
+            padding: 15px 20px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            margin-bottom: 20px;
+            max-width: 70%;
+            border-bottom-left-radius: 5px;
+        }
+
+        .typing-indicator.show {
+            display: block;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 5px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .chat-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .chat-sidebar {
+                order: -1;
+            }
+            
+            .message-content {
+                max-width: 85%;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary-color);
+        }
+    </style>
 </head>
 <body>
-  <div class="app">
-    <header>
-      <div class="brand"><div class="dot"></div> EnChat</div>
-      <div class="actions">
-        <button class="btn" id="historyBtn">Lịch sử</button>
-        <button class="btn" id="logoutBtn">Đăng xuất</button>
-      </div>
-    </header>
-    <main>
-      <div class="chat">
-        <div id="messages"></div>
-      </div>
-    </main>
-    <footer>
-      <div class="composer">
-        <label class="icon-btn" title="Gửi ảnh" for="image-input">📎</label>
-        <input id="message-input" class="input" type="text" placeholder="Nhập tin nhắn và nhấn Enter để gửi..." autocomplete="off">
-        <button class="btn primary" id="sendBtn">Gửi</button>
-        <input id="image-input" type="file" accept="image/*" style="display:none">
-      </div>
-    </footer>
-  </div>
+    <div class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span>Enchat</span>
+                </div>
+                <div class="user-info">
+                    <div class="user-avatar" id="user-avatar">U</div>
+                    <span id="user-name">User</span>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <script>
-    const messagesEl = document.getElementById('messages');
-    const inputEl = document.getElementById('message-input');
-    const imageEl = document.getElementById('image-input');
-    const sendBtn = document.getElementById('sendBtn');
-    const token = localStorage.getItem('enchat-token');
-    if (!token) { window.location.href = '/login'; }
+    <div class="container">
+        <div class="chat-container">
+            <div class="chat-main">
+                <div class="chat-header">
+                    <h2><i class="fas fa-comments"></i> AI Grammar Assistant</h2>
+                    <p>Hỏi đáp ngữ pháp tiếng Anh với AI thông minh</p>
+                </div>
+                
+                <div class="chat-messages" id="chat-messages">
+                    <div class="welcome-message">
+                        <i class="fas fa-hand-wave"></i>
+                        <h3>Xin chào! 👋</h3>
+                        <p>Tôi có thể giúp gì cho bạn hôm nay? Hãy hỏi tôi về ngữ pháp tiếng Anh, hoặc gửi ảnh để tôi phân tích!</p>
+                    </div>
+                </div>
 
-    function appendMessage(role, content) {
-      const row = document.createElement('div');
-      row.className = 'message ' + (role === 'user' ? 'user' : 'assistant');
-      const bubble = document.createElement('div');
-      bubble.className = 'bubble';
-      bubble.textContent = content;
-      row.appendChild(bubble);
-      messagesEl.appendChild(row);
-      messagesEl.scrollTop = messagesEl.scrollHeight;
-    }
+                <div class="typing-indicator" id="typing-indicator">
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
 
-    function setSending(isSending){
-      inputEl.disabled = isSending; sendBtn.disabled = isSending;
-      sendBtn.textContent = isSending ? 'Đang gửi...' : 'Gửi';
-    }
+                <div class="chat-input-area">
+                    <div class="input-container">
+                        <textarea 
+                            class="message-input" 
+                            id="message-input" 
+                            placeholder="Nhập câu hỏi của bạn..."
+                            rows="1"
+                        ></textarea>
+                        <label for="file-input" class="upload-btn" title="Gửi ảnh">
+                            <i class="fas fa-image"></i>
+                        </label>
+                        <input type="file" id="file-input" class="file-input" accept="image/*">
+                        <button class="send-btn" id="send-btn" onclick="sendMessage()">
+                            <i class="fas fa-paper-plane"></i>
+                            Gửi
+                        </button>
+                    </div>
+                </div>
+            </div>
 
-    async function sendMessage(){
-      const message = (inputEl.value || '').trim();
-      if(!message) return;
-      appendMessage('user', message);
-      inputEl.value = '';
-      setSending(true);
-      try{
-        const res = await fetch('/api/v1/chat',{
-          method:'POST',
-          headers:{'Content-Type':'application/json','Authorization':'Bearer ' + token},
-          body: JSON.stringify({ message })
+            <div class="chat-sidebar">
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-history"></i> Lịch sử chat</h3>
+                    <button class="history-btn" onclick="toggleHistory()">
+                        <i class="fas fa-eye"></i> Xem lịch sử
+                    </button>
+                    <div class="chat-history" id="chat-history">
+                        <!-- Chat history will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-tools"></i> Công cụ</h3>
+                    <button class="export-btn" onclick="exportChat()">
+                        <i class="fas fa-download"></i> Xuất chat
+                    </button>
+                    <button class="clear-btn" onclick="clearChat()">
+                        <i class="fas fa-trash"></i> Xóa chat
+                    </button>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-info-circle"></i> Thông tin</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary);">
+                        Enchat sử dụng AI để hỗ trợ học ngữ pháp tiếng Anh. Bạn có thể:
+                    </p>
+                    <ul style="margin-top: 10px; padding-left: 20px; font-size: 0.9rem; color: var(--text-secondary);">
+                        <li>Hỏi về quy tắc ngữ pháp</li>
+                        <li>Gửi ảnh để phân tích</li>
+                        <li>Luyện tập với ví dụ</li>
+                        <li>Xem lịch sử học tập</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chatMessages = document.getElementById('chat-messages');
+        const messageInput = document.getElementById('message-input');
+        const sendBtn = document.getElementById('send-btn');
+        const fileInput = document.getElementById('file-input');
+        const typingIndicator = document.getElementById('typing-indicator');
+        const chatHistory = document.getElementById('chat-history');
+        const userAvatar = document.getElementById('user-avatar');
+        const userName = document.getElementById('user-name');
+
+        const token = localStorage.getItem('enchat-token');
+        const userInfo = JSON.parse(localStorage.getItem('enchat-user') || '{}');
+
+        // Kiểm tra đăng nhập
+        if (!token) {
+            window.location.href = "/login";
+        }
+
+        // Hiển thị thông tin user
+        if (userInfo.name) {
+            userName.textContent = userInfo.name;
+            userAvatar.textContent = userInfo.name.charAt(0).toUpperCase();
+        }
+
+        // Auto-resize textarea
+        messageInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
         });
-        if(!res.ok){
-          const err = await res.json().catch(()=>({}));
-          appendMessage('assistant', 'Lỗi: ' + (err.detail || res.statusText));
-        } else {
-          const data = await res.json();
-          appendMessage('assistant', data.reply);
+
+        // Enter để gửi tin nhắn
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Gửi tin nhắn
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // Hiển thị tin nhắn user
+            appendMessage('user', message);
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+
+            // Hiển thị typing indicator
+            showTypingIndicator();
+
+            try {
+                const response = await fetch('/api/v1/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Lỗi kết nối');
+                }
+
+                const data = await response.json();
+                hideTypingIndicator();
+                appendMessage('bot', data.reply || 'Xin lỗi, tôi không thể xử lý yêu cầu này.');
+
+            } catch (error) {
+                hideTypingIndicator();
+                appendMessage('bot', 'Xin lỗi, có lỗi xảy ra: ' + error.message);
+            }
         }
-      }catch(err){
-        appendMessage('assistant','Lỗi: ' + err.message);
-      }finally{
-        setSending(false);
-      }
-    }
 
-    async function sendImage(file){
-      if(!file) return;
-      appendMessage('user','[📷 Đã gửi một ảnh]');
-      const formData = new FormData();
-      formData.append('file', file);
-      try{
-        const res = await fetch('/api/v1/upload',{ method:'POST', headers:{'Authorization':'Bearer ' + token}, body: formData });
-        if(!res.ok){
-          const err = await res.json().catch(()=>({}));
-          appendMessage('assistant','Lỗi: ' + (err.detail || res.statusText));
-        }else{
-          const data = await res.json();
-          appendMessage('assistant', data.reply);
+        // Gửi ảnh
+        fileInput.addEventListener('change', async function() {
+            if (!this.files.length) return;
+
+            const file = this.files[0];
+            const formData = new FormData();
+            formData.append("file", file);
+
+            appendMessage('user', `📷 Đã gửi ảnh: ${file.name}`);
+            showTypingIndicator();
+
+            try {
+                const response = await fetch('/api/v1/upload', {
+                    method: 'POST',
+                    headers: { 'Authorization': 'Bearer ' + token },
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error('Lỗi upload ảnh');
+                }
+
+                const data = await response.json();
+                hideTypingIndicator();
+                appendMessage('bot', data.reply || 'Đã xử lý ảnh thành công!');
+
+            } catch (error) {
+                hideTypingIndicator();
+                appendMessage('bot', 'Xin lỗi, có lỗi xảy ra khi xử lý ảnh: ' + error.message);
+            }
+
+            this.value = '';
+        });
+
+        // Thêm tin nhắn vào chat
+        function appendMessage(role, content) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+            
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('vi-VN', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+
+            messageDiv.innerHTML = `
+                <div class="message-content">
+                    ${content}
+                    <span class="message-time">${timeString}</span>
+                </div>
+            `;
+
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Xóa welcome message nếu có
+            const welcomeMessage = chatMessages.querySelector('.welcome-message');
+            if (welcomeMessage) {
+                welcomeMessage.remove();
+            }
         }
-      }catch(err){
-        appendMessage('assistant','Lỗi: ' + err.message);
-      }
-    }
 
-    async function loadHistory(){
-      try{
-        const res = await fetch('/api/v1/history',{ headers:{'Authorization':'Bearer ' + token}});
-        const data = await res.json().catch(()=>({items:[]}));
-        (data.items || []).forEach(m => appendMessage(m.role === 'assistant' ? 'assistant' : 'user', m.content));
-      }catch(err){
-        console.warn('Load history error', err);
-      }
-    }
+        // Hiển thị typing indicator
+        function showTypingIndicator() {
+            typingIndicator.classList.add('show');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
 
-    document.getElementById('historyBtn').addEventListener('click', loadHistory);
-    document.getElementById('logoutBtn').addEventListener('click', ()=>{ localStorage.removeItem('enchat-token'); localStorage.removeItem('enchat-user'); location.href='/login'; });
-    sendBtn.addEventListener('click', sendMessage);
-    inputEl.addEventListener('keydown', (e)=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMessage(); } });
-    imageEl.addEventListener('change', (e)=>{ if(e.target.files && e.target.files[0]) sendImage(e.target.files[0]); e.target.value=''; });
+        // Ẩn typing indicator
+        function hideTypingIndicator() {
+            typingIndicator.classList.remove('show');
+        }
 
-    loadHistory();
-  </script>
+        // Toggle lịch sử chat
+        function toggleHistory() {
+            chatHistory.classList.toggle('show');
+            if (chatHistory.classList.contains('show')) {
+                loadHistory();
+            }
+        }
+
+        // Load lịch sử chat
+        async function loadHistory() {
+            try {
+                if (!token) {
+                    console.log('No token found, skipping history load');
+                    return;
+                }
+
+                const response = await fetch('/api/v1/history', {
+                    headers: { 'Authorization': 'Bearer ' + token }
+                });
+
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        // Token expired or invalid
+                        localStorage.removeItem('enchat-token');
+                        localStorage.removeItem('enchat-user');
+                        window.location.href = "/login";
+                        return;
+                    }
+                    throw new Error('Lỗi tải lịch sử');
+                }
+
+                const data = await response.json();
+                const historyContainer = document.getElementById('chat-history');
+                
+                if (data.items && data.items.length > 0) {
+                    historyContainer.innerHTML = data.items.map(item => `
+                        <div class="history-item" onclick="loadHistoryItem('${item.id}')">
+                            <div class="history-preview">${item.content.substring(0, 50)}...</div>
+                        </div>
+                    `).join('');
+                } else {
+                    historyContainer.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">Chưa có lịch sử chat</p>';
+                }
+
+            } catch (error) {
+                console.error('Lỗi tải lịch sử:', error);
+                document.getElementById('chat-history').innerHTML = '<p style="text-align: center; color: red;">Lỗi tải lịch sử</p>';
+            }
+        }
+
+        // Load item lịch sử
+        function loadHistoryItem(historyId) {
+            // Implement loading specific history item
+            console.log('Loading history item:', historyId);
+        }
+
+        // Xuất chat
+        function exportChat() {
+            const messages = chatMessages.querySelectorAll('.message');
+            if (messages.length === 0) {
+                alert('Chưa có tin nhắn để xuất!');
+                return;
+            }
+
+            let exportText = '=== LỊCH SỬ CHAT ENCHAT ===\n\n';
+            messages.forEach(msg => {
+                const role = msg.classList.contains('user') ? 'Bạn' : 'AI';
+                const content = msg.querySelector('.message-content').textContent.replace(/\d{2}:\d{2}/, '').trim();
+                exportText += `${role}: ${content}\n\n`;
+            });
+
+            const blob = new Blob([exportText], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `enchat-chat-${new Date().toISOString().split('T')[0]}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Xóa chat
+        function clearChat() {
+            if (confirm('Bạn có chắc muốn xóa toàn bộ chat hiện tại?')) {
+                chatMessages.innerHTML = `
+                    <div class="welcome-message">
+                        <i class="fas fa-hand-wave"></i>
+                        <h3>Xin chào! 👋</h3>
+                        <p>Tôi có thể giúp gì cho bạn hôm nay? Hãy hỏi tôi về ngữ pháp tiếng Anh, hoặc gửi ảnh để tôi phân tích!</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Đăng xuất
+        function logout() {
+            localStorage.removeItem('enchat-token');
+            localStorage.removeItem('enchat-user');
+            window.location.href = "/";
+        }
+
+        // Load lịch sử khi khởi động (nếu có)
+        // loadHistory();
+    </script>
 </body>
 </html>

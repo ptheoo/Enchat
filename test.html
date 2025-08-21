@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test - Enchat</title>
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+    <link rel="icon" type="image/svg+xml" sizes="16x16" href="/static/favicon-16x16.svg">
+    <link rel="icon" type="image/svg+xml" sizes="32x32" href="/static/favicon.svg">
+    <link rel="manifest" href="/static/manifest.json">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .test-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .test-header {
+            margin-bottom: 30px;
+        }
+
+        .test-header i {
+            font-size: 4rem;
+            color: #f093fb;
+            margin-bottom: 20px;
+        }
+
+        .test-header h1 {
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .test-header p {
+            color: #718096;
+        }
+
+        .test-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .test-link {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .test-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .test-link.accent {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .test-link.success {
+            background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        }
+
+        .test-link.warning {
+            background: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+        }
+
+        .test-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <div class="test-header">
+            <i class="fas fa-robot"></i>
+            <h1>Enchat Test</h1>
+            <p>Kiểm tra giao diện mới</p>
+        </div>
+
+        <div class="test-links">
+            <a href="/" class="test-link">
+                <i class="fas fa-home"></i>
+                Trang chủ
+            </a>
+            <a href="/chat" class="test-link accent">
+                <i class="fas fa-comments"></i>
+                Trang chat
+            </a>
+            <a href="/login" class="test-link success">
+                <i class="fas fa-sign-in-alt"></i>
+                Đăng nhập
+            </a>
+            <a href="/register" class="test-link">
+                <i class="fas fa-user-plus"></i>
+                Đăng ký
+            </a>
+            <a href="/forgot" class="test-link warning">
+                <i class="fas fa-key"></i>
+                Quên mật khẩu
+            </a>
+            <a href="/demo" class="test-link accent">
+                <i class="fas fa-play"></i>
+                Demo
+            </a>
+        </div>
+
+        <div class="test-footer">
+            <p>Chọn một trang để test giao diện mới</p>
+        </div>
+    </div>
+</body>
+</html>
