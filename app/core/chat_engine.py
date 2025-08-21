@@ -33,6 +33,7 @@ def get_chat_response(messages: list[dict]) -> str:
     based on the configuration.
     """
     logger.info("Generating chat response...")
+    logger.debug(f"Input messages: {len(messages)} messages")
 
     if USE_GEMINI:
         try:
@@ -56,7 +57,9 @@ def get_chat_response(messages: list[dict]) -> str:
             # Generate response from OpenAI Chat API (new client)
             response = client.chat.completions.create(
                 model=MODEL_NAME,
-                messages=messages
+                messages=messages,
+                temperature=0.7,  # Thêm một chút sáng tạo nhưng vẫn nhất quán
+                max_tokens=1000   # Giới hạn độ dài response
             )
 
             return response.choices[0].message.content.strip()

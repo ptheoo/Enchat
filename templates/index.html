@@ -662,7 +662,17 @@
 
                 const data = await response.json();
                 hideTypingIndicator();
-                appendMessage('bot', data.reply || 'Xin lỗi, tôi không thể xử lý yêu cầu này.');
+                
+                // Hiển thị reply với context awareness
+                const reply = data.reply || 'Xin lỗi, tôi không thể xử lý yêu cầu này.';
+                appendMessage('bot', reply);
+                
+                // Log để debug context
+                console.log('Chat context:', {
+                    userMessage: message,
+                    aiReply: reply,
+                    conversationHistory: data.conversation || []
+                });
 
             } catch (error) {
                 hideTypingIndicator();
