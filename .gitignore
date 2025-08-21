@@ -30,3 +30,7 @@ chroma_db/
 # Docker
 *.pid
 docker-compose.override.yml
+
+# Data files
+sources.txt
+*.txt
