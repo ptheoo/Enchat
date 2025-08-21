@@ -1,92 +1,92 @@
-# 🤖 Enchat - AI Grammar Assistant
+# Enchat - AI Grammar Assistant
 
 **Enchat** là một chatbot AI thông minh được thiết kế để hỗ trợ học tập ngữ pháp tiếng Anh. Ứng dụng sử dụng công nghệ AI tiên tiến để cung cấp trải nghiệm học tập tương tác, cá nhân hóa và hiệu quả.
 
-## ✨ Tính năng chính
+## A. Tính năng chính
 
-- 🧠 **AI Thông Minh**: Sử dụng OpenAI GPT và Google Gemini để hiểu và giải thích ngữ pháp
-- 📸 **Phân Tích Ảnh**: OCR để đọc và phân tích văn bản tiếng Anh từ hình ảnh
-- 💬 **Chat Tương Tác**: Giao diện chat thân thiện với người dùng
-- 📚 **Lịch Sử Học Tập**: Lưu trữ và theo dõi tiến độ học tập
-- 🔐 **Xác Thực Người Dùng**: Hệ thống đăng nhập/đăng ký an toàn
-- 📱 **Responsive Design**: Tương thích với mọi thiết bị
-- 🌙 **Giao Diện Đẹp**: Thiết kế hiện đại với animations và gradients
+- **AI Thông Minh**: Sử dụng OpenAI GPT và Google Gemini để hiểu và giải thích ngữ pháp
+- **Phân Tích Ảnh**: OCR để đọc và phân tích văn bản tiếng Anh từ hình ảnh
+- **Chat Tương Tác**: Giao diện chat thân thiện với người dùng
+- **Lịch Sử Học Tập**: Lưu trữ và theo dõi tiến độ học tập
+- **Xác Thực Người Dùng**: Hệ thống đăng nhập/đăng ký an toàn
+- **Responsive Design**: Tương thích với mọi thiết bị
+- **Giao Diện Đẹp**: Thiết kế hiện đại với animations và gradients
 
-## 🏗️ Kiến trúc hệ thống
+## B. Kiến trúc hệ thống
 
-### Backend (FastAPI + Python)
+### B.1 Backend (FastAPI + Python)
 - **FastAPI**: Framework web hiệu suất cao
 - **MongoDB**: Cơ sở dữ liệu chính cho người dùng và lịch sử chat
 - **ChromaDB**: Vector database cho semantic search
 - **JWT**: Xác thực và bảo mật
 - **Pydantic**: Validation dữ liệu
 
-### Frontend (HTML + CSS + JavaScript)
+### B.2 Frontend (HTML + CSS + JavaScript)
 - **HTML5**: Cấu trúc semantic
 - **CSS3**: Styling hiện đại với CSS variables và animations
 - **Vanilla JavaScript**: Logic tương tác và API calls
 - **Font Awesome**: Icons đẹp mắt
 - **Responsive Design**: Tương thích mobile và desktop
 
-## 📁 Cấu trúc thư mục
+## C. Cấu trúc thư mục
 
 ```
-base_copy/
-├── 📁 app/                          # Core application
-│   ├── 📁 api/                      # API endpoints
-│   │   └── 📁 v1/                  # API version 1
-│   │       ├── 📄 auth.py          # Authentication endpoints
-│   │       ├── 📄 chat.py          # Chat endpoints
-│   │       ├── 📄 history.py       # Chat history endpoints
-│   │       └── 📄 upload.py        # File upload endpoints
-│   ├── 📁 core/                     # Core functionality
-│   │   ├── 📄 chat_engine.py       # AI chat engine
-│   │   ├── 📄 db.py                # Database connections
-│   │   └── 📄 vector_store.py      # Vector database operations
-│   ├── 📁 services/                 # Business logic
-│   │   └── 📄 chat_service.py      # Chat service layer
-│   └── 📁 utils/                    # Utility functions
-│       ├── 📄 auth.py               # Authentication utilities
-│       ├── 📄 logger.py             # Logging configuration
-│       └── 📄 security.py           # Security utilities
-├── 📁 static/                       # Static assets
-│   ├── 📄 favicon.ico              # Website favicon
-│   └── 📄 style.css                # Common CSS styles
-├── 📁 templates/                    # HTML templates
-│   ├── 📄 home.html                # Landing page
-│   ├── 📄 login.html               # Login page
-│   ├── 📄 register.html            # Registration page
-│   ├── 📄 forgot.html              # Forgot password page
-│   └── 📄 index.html               # Main chat interface
-├── 📁 config/                       # Configuration files
-│   └── 📄 settings.py              # Application settings
-├── 📁 scripts/                      # Utility scripts
-│   ├── 📄 clean_grammar.py         # Grammar cleaning script
-│   ├── 📄 crawl_grammar.py         # Grammar crawling script
-│   └── 📄 detect_noise.py          # Noise detection script
-├── 📁 chroma_db/                    # Vector database storage
-├── 📄 main.py                       # FastAPI application entry point
-├── 📄 requirements.txt              # Python dependencies
-├── 📄 Dockerfile                    # Docker configuration
-├── 📄 docker-compose.yml            # Docker Compose setup
-└── 📄 README.md                     # This file
+enchat/
+├── app/                          # Core application
+│   ├── api/                      # API endpoints
+│   │   └── v1/                  # API version 1
+│   │       ├── auth.py          # Authentication endpoints
+│   │       ├── chat.py          # Chat endpoints
+│   │       ├── history.py       # Chat history endpoints
+│   │       └── upload.py        # File upload endpoints
+│   ├── core/                     # Core functionality
+│   │   ├── chat_engine.py       # AI chat engine
+│   │   ├── db.py                # Database connections
+│   │   └── vector_store.py      # Vector database operations
+│   ├── services/                 # Business logic
+│   │   └── chat_service.py      # Chat service layer
+│   └── utils/                    # Utility functions
+│       ├── auth.py               # Authentication utilities
+│       ├── logger.py             # Logging configuration
+│       └── security.py           # Security utilities
+├── static/                       # Static assets
+│   ├── favicon.ico              # Website favicon
+│   └── style.css                # Common CSS styles
+├── templates/                    # HTML templates
+│   ├── home.html                # Landing page
+│   ├── login.html               # Login page
+│   ├── register.html            # Registration page
+│   ├── forgot.html              # Forgot password page
+│   └── index.html               # Main chat interface
+├── config/                       # Configuration files
+│   └── settings.py              # Application settings
+├── scripts/                      # Utility scripts
+│   ├── clean_grammar.py         # Grammar cleaning script
+│   ├── crawl_grammar.py         # Grammar crawling script
+│   └── detect_noise.py          # Noise detection script
+├── chroma_db/                    # Vector database storage
+├── main.py                       # FastAPI application entry point
+├── requirements.txt              # Python dependencies
+├── Dockerfile                    # Docker configuration
+├── docker-compose.yml            # Docker Compose setup
+└── README.md                     # This file
 ```
 
-## 🚀 Cài đặt và chạy
+## D. Cài đặt và chạy
 
-### Yêu cầu hệ thống
+### D.1 Yêu cầu hệ thống
 - Python 3.8+
 - MongoDB
 - ChromaDB
 - Node.js (cho development)
 
-### Bước 1: Clone repository
+### D.2 Bước 1: Clone repository
 ```bash
 git clone <repository-url>
-cd base_copy
+cd enchat
 ```
 
-### Bước 2: Tạo virtual environment
+### D.3 Bước 2: Tạo virtual environment
 ```bash
 python -m venv venv
 
@@ -97,17 +97,17 @@ venv\Scripts\activate
 source venv/bin/activate
 ```
 
-### Bước 3: Cài đặt dependencies
+### D.4 Bước 3: Cài đặt dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### Bước 4: Cấu hình môi trường
+### D.5 Bước 4: Cấu hình môi trường
 Tạo file `.env` trong thư mục gốc:
 ```env
 # Database
 MONGODB_URL=mongodb://localhost:27017
-DATABASE_NAME=enchat
+DATABASE_NAME=grammar_db
 
 # JWT
 SECRET_KEY=your-secret-key-here
@@ -127,7 +127,7 @@ SMTP_USERNAME=your-email@gmail.com
 SMTP_PASSWORD=your-app-password
 ```
 
-### Bước 5: Khởi động MongoDB
+### D.6 Bước 5: Khởi động MongoDB
 ```bash
 # Windows
 mongod
@@ -139,7 +139,7 @@ brew services start mongodb-community
 sudo systemctl start mongod
 ```
 
-### Bước 6: Chạy ứng dụng
+### D.7 Bước 6: Chạy ứng dụng
 ```bash
 # Development mode
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
@@ -148,73 +148,73 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 uvicorn main:app --host 0.0.0.0 --port 8000
 ```
 
-### Bước 7: Truy cập ứng dụng
+### D.8 Bước 7: Truy cập ứng dụng
 Mở trình duyệt và truy cập: `http://localhost:8000`
 
-## 🐳 Sử dụng Docker
+## E. Sử dụng Docker
 
-### Chạy với Docker Compose
+### E.1 Chạy với Docker Compose
 ```bash
 docker-compose up -d
 ```
 
-### Build Docker image
+### E.2 Build Docker image
 ```bash
 docker build -t enchat .
 docker run -p 8000:8000 enchat
 ```
 
-## 📱 Sử dụng ứng dụng
+## F. Sử dụng ứng dụng
 
-### 1. Trang chủ (`/`)
+### F.1 Trang chủ (`/`)
 - Giới thiệu về Enchat
 - Các tính năng chính
 - Nút đăng ký và đăng nhập
 - Quotes tiếng Anh động
 
-### 2. Đăng ký (`/register`)
+### F.2 Đăng ký (`/register`)
 - Tạo tài khoản mới
 - Xác thực email
 - Tự động đăng nhập sau khi đăng ký
 
-### 3. Đăng nhập (`/login`)
+### F.3 Đăng nhập (`/login`)
 - Đăng nhập với email và mật khẩu
 - Lưu token xác thực
 - Chuyển hướng đến trang chat
 
-### 4. Quên mật khẩu (`/forgot`)
+### F.4 Quên mật khẩu (`/forgot`)
 - Gửi email reset mật khẩu
 - Xác thực email tồn tại
 
-### 5. Chat chính (`/chat`)
+### F.5 Chat chính (`/chat`)
 - Giao diện chat tương tác
 - Gửi tin nhắn văn bản
 - Upload và phân tích ảnh
 - Xem lịch sử chat
 - Giao diện responsive
 
-## 🔌 API Endpoints
+## G. API Endpoints
 
-### Authentication
+### G.1 Authentication
 - `POST /api/v1/auth/register` - Đăng ký người dùng
 - `POST /api/v1/auth/login` - Đăng nhập
 - `POST /api/v1/auth/forgot` - Quên mật khẩu
 - `GET /api/v1/auth/me` - Lấy thông tin người dùng hiện tại
 
-### Chat
+### G.2 Chat
 - `POST /api/v1/chat` - Gửi tin nhắn chat
 - `POST /api/v1/upload` - Upload ảnh để phân tích
 - `GET /api/v1/history` - Lấy lịch sử chat
 
-## 🎨 Giao diện người dùng
+## H. Giao diện người dùng
 
-### Thiết kế
+### H.1 Thiết kế
 - **Modern UI/UX**: Giao diện hiện đại với gradients và animations
 - **Responsive**: Tương thích với mọi kích thước màn hình
 - **Dark/Light Theme**: Hỗ trợ chủ đề sáng/tối
 - **Animations**: Hiệu ứng mượt mà và hấp dẫn
 
-### Components
+### H.2 Components
 - **Header**: Navigation và branding
 - **Hero Section**: Giới thiệu chính
 - **Features Grid**: Hiển thị tính năng
@@ -222,15 +222,15 @@ docker run -p 8000:8000 enchat
 - **Sidebar**: Lịch sử và controls
 - **Forms**: Đăng nhập, đăng ký, quên mật khẩu
 
-## 🔧 Development
+## I. Development
 
-### Cấu trúc code
+### I.1 Cấu trúc code
 - **Modular Architecture**: Tách biệt rõ ràng giữa các layer
 - **Service Pattern**: Business logic trong service layer
 - **Repository Pattern**: Data access abstraction
 - **Dependency Injection**: Sử dụng FastAPI Depends
 
-### Testing
+### I.2 Testing
 ```bash
 # Chạy tests
 pytest
@@ -242,7 +242,7 @@ pytest --cov=app
 pytest tests/test_auth.py
 ```
 
-### Code formatting
+### I.3 Code formatting
 ```bash
 # Format code với black
 black .
@@ -254,9 +254,9 @@ isort .
 flake8 .
 ```
 
-## 📊 Database Schema
+## J. Database Schema
 
-### Users Collection
+### J.1 Users Collection
 ```json
 {
   "_id": "ObjectId",
@@ -268,7 +268,7 @@ flake8 .
 }
 ```
 
-### Chat History Collection
+### J.2 Chat History Collection
 ```json
 {
   "_id": "ObjectId",
@@ -280,7 +280,7 @@ flake8 .
 }
 ```
 
-## 🔒 Bảo mật
+## K. Bảo mật
 
 - **JWT Authentication**: Token-based authentication
 - **Password Hashing**: Bcrypt encryption
@@ -289,7 +289,7 @@ flake8 .
 - **Rate Limiting**: API rate limiting
 - **HTTPS**: Secure communication
 
-## 📈 Performance
+## L. Performance
 
 - **Async/Await**: Non-blocking I/O operations
 - **Connection Pooling**: Database connection optimization
@@ -297,9 +297,9 @@ flake8 .
 - **CDN**: Static asset delivery
 - **Compression**: Gzip compression
 
-## 🚀 Deployment
+## M. Deployment
 
-### Production Checklist
+### M.1 Production Checklist
 - [ ] Set production environment variables
 - [ ] Configure reverse proxy (Nginx)
 - [ ] Set up SSL certificates
@@ -308,7 +308,7 @@ flake8 .
 - [ ] Performance testing
 - [ ] Security audit
 
-### Environment Variables
+### M.2 Environment Variables
 ```bash
 # Production
 ENVIRONMENT=production
@@ -317,13 +317,13 @@ LOG_LEVEL=info
 
 # Database
 MONGODB_URL=mongodb://production-db:27017
-DATABASE_NAME=enchat_prod
+DATABASE_NAME=grammar_db_prod
 
 # Security
 SECRET_KEY=production-secret-key
 ```
 
-## 🤝 Contributing
+## N. Contributing
 
 1. Fork repository
 2. Tạo feature branch (`git checkout -b feature/amazing-feature`)
@@ -331,17 +331,17 @@ SECRET_KEY=production-secret-key
 4. Push to branch (`git push origin feature/amazing-feature`)
 5. Tạo Pull Request
 
-## 📝 License
+## O. License
 
 Dự án này được phân phối dưới MIT License. Xem file `LICENSE` để biết thêm chi tiết.
 
-## 📞 Hỗ trợ
+## P. Hỗ trợ
 
 - **Email**: support@enchat.com
 - **Documentation**: [docs.enchat.com](https://docs.enchat.com)
 - **Issues**: [GitHub Issues](https://github.com/username/enchat/issues)
 
-## 🙏 Acknowledgments
+## Q. Acknowledgments
 
 - OpenAI cho GPT API
 - Google cho Gemini API
@@ -351,6 +351,6 @@ Dự án này được phân phối dưới MIT License. Xem file `LICENSE` đ�
 
 ---
 
-**Enchat** - Học tiếng Anh thông minh với AI! 🚀✨
+**Enchat** - Học tiếng Anh thông minh với AI!
 
 *Made with ❤️ for language learners worldwide*
